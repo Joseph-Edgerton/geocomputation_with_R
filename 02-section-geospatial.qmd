@@ -1,0 +1,328 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+# Geocomputation with R
+
+URL <https://geocompr.robinlovelace.net/intro.html>
+
+# Introduction
+
+Geocomputation:
+working with geographic data in a computational way,
+focusing on code, reproducibility, and modularity.
+
+History:
+Ah, interesting, proj-strings for coordinate reference
+systems were replaced by "well known text"
+
+"high-performance interactive rendering platforms in the mapview package, such as "leafgl" and "mapdeck"
+
+1.6 Excercise:
+
+1. I think geocomputation best describes my work because
+I want my analyses to be reproducible by other analysts after
+me and I would like my code to not be one long document but rather
+split into pieces that can be separately tested and visualized.
+I don't do any strong statistics or large data so I wouldn't use 
+GDS. Also, I try not to use proprietary GIS systems like ArcPro
+even though that is not the only GIS system.
+
+2. Three good reasons to use code for geospatial work include 1. reproducible, the code can (hopefully) be checked by someone else to arrive at the same results, 2. better understand geoprocesses, GUIs abstract away the processes that are occurring to the data and code helps build understanding, 3. Lot of open resources to learn from and use.
+
+3. Real world problems and solutions using geocomputation
+
+```{mermaid}
+flowchart LR
+  A[Where can people recreate?] --> B(maps and proximity analysis for watercraft and fishing access)
+  C[Does one area have better park coverage than another?] --> D[percent of park land over urban land]
+```
+
+
+# Geographic data in R
+
+```{r}
+#| label: "Install libraries"
+# install.packages("sf")
+# install.packages("terra")
+# install.packages("spData")
+# install.packages("spDataLarge", repos = "https://nowosad.r-universe.dev")
+```
+
+```{r}
+#| label: "load libraries"
+library(sf)
+library(terra)
+library(spData)
+library(spDataLarge)
+```
+
+Vector = points, lines, polygons (discrete, defined borders) located
+geogrphically via a coordinate reference system (CRS)
+
+sf = classes for geographic vector data, and is open standard
+
+sf_use_s2(false) = use planar geometry (flat, projected),
+not spherical (round, unprojected lat/long) 
+
+```{r}
+vignette(package = "sf") # see which vignettes are available
+vignette("sf1")
+```
+
+sf objects stored in a df, the geometry column is a list column (sfc) and are composed of simple feature geometry (sfg) objects.
+
+- contains geographic metadata and the CRS
+
+- common format used in QGIS and PostGIS, easy to transfer to other geodatabases
+
+- read_sf returns a tibble (vs st_read with a df)
+
+```{r}
+world_dfr = st_read(system.file("shapes/world.shp", package = "spData"))
+#> Reading layer `world' from data source 
+#>   `/usr/local/lib/R/site-library/spData/shapes/world.shp' using driver `ESRI Shapefile'
+#> Simple feature collection with 177 features and 10 fields
+#> Geometry type: MULTIPOLYGON
+#> Dimension:     XY
+#> Bounding box:  xmin: -180 ymin: -89.9 xmax: 180 ymax: 83.6
+#> Geodetic CRS:  WGS 84
+world_tbl = read_sf(system.file("shapes/world.shp", package = "spData"))
+class(world_dfr)
+#> [1] "sf"         "data.frame"
+class(world_tbl)
+#> [1] "sf"         "tbl_df"     "tbl"        "data.frame"
+```
+
+
+- can covert to/from the legacy "spatial" class
+
+Basic plots:
+
+```{r}
+plot(world[3:6])
+plot(world["pop"])
+```
+
+Use layers to build maps
+
+```{r}
+world_asia = world[world$continent == "Asia", ]
+asia = st_union(world_asia)
+plot(world["pop"], reset = FALSE)
+plot(asia, add = TRUE, col = "red")
+```
+
+Various ways to modify maps with plot()
+
+```{r}
+plot(world["continent"], reset = FALSE)
+cex = sqrt(world$pop) / 10000
+world_cents = st_centroid(world, of_largest = TRUE)
+plot(st_geometry(world_cents), add = TRUE, cex = cex)
+```
+
+```{r}
+india = world[world$name_long == "India", ]
+plot(st_geometry(india),
+     expandBB = c(0, 0.2, 0.1, 1),
+     col = "gray",
+     lwd = 3)
+plot(st_geometry(world_asia),
+     add = TRUE)
+
+```
+
+Geometry types:
+- 18 supported geometry types for sf (7 most common)
+
+- well-known binary or well-known text = standard for encoding sf
+
+- WKB = hexadecimal, easy for computers
+
+- WKT = human readable markup description
+
+Point = coordinate in 2d, 3d, 4d space
+
+linestring = sequence of points with a straight line connecting them
+
+polygon = closed, non-intersecting ring of sequence of points
+
+Also, each has a multi version to have multiple of the same geometry
+
+Lastly, there is any combo of multipoints + linestrings
+
+
+sf class:
+
+- sf contains geometries and non-geogrphic attributes
+
+- attribute = measured value, group, or other
+
+Create your own sf object:
+
+```{r}
+
+lnd_point = st_point(c(0.1, 51.5))
+lnd_geom = st_sfc(lnd_point, crs = 4326)
+lnd_attrib = data.frame(
+  name = "London",
+  temperature = 25,
+  date = as.Date("2017-06-21")
+)
+lnd_sf = st_sf(lnd_attrib, geometry = lnd_geom)
+
+```
+
+
+Go from sfg -> sfc (crs) + dataframe -> sf object
+
+simple feature geometries (sfg):
+class that represents various vector geometry types
+
+- create using numeric vector, matrix, or a list
+
+```{r}
+# xy point
+st_point(c(5, 2))
+
+# xyz point
+st_point(c(5, 2, 3))
+
+#XYM
+st_point(c(5, 2, 1), dim = "XYM")
+
+# XYZM
+st_point(c(5, 2, 3, 1))
+
+```
+Use matrices for multipoint or linestring objects
+
+```{r}
+multipoint_matrix = rbind(c(5, 2),
+                          c(1, 3),
+                          c(3, 4),
+                          c(3, 2))
+st_multipoint(multipoint_matrix)
+
+linestring_matrix = rbind(c(1, 5),
+                          c(4, 4),
+                          c(4, 1),
+                          c(2, 2),
+                          c(3, 2))
+st_linestring(linestring_matrix)
+
+```
+
+Use lists for multilinestrings, multi + polygons, and geometry collections
+
+```{r}
+# polygon
+polygon_list = list(rbind(c(1, 5),
+                          c(2, 2),
+                          c(4, 1),
+                          c(4, 4),
+                          c(1, 5)))
+
+st_polygon(polygon_list)
+
+# polygon with hole
+polygon_border = rbind(c(1, 5),
+                          c(2, 2),
+                          c(4, 1),
+                          c(4, 4),
+                          c(1, 5))
+polygon_hole = rbind(c(2, 4),
+                     c(3, 4),
+                     c(3, 3),
+                     c(2, 3),
+                     c(2, 4))
+polygon_with_hole_list = list(polygon_border,
+                              polygon_hole)
+st_polygon(polygon_with_hole_list)
+
+# multilinestring
+multilinestring_list = list(rbind(c(1, 5),
+                            c(4, 4),
+                            c(4, 1),
+                            c(2, 2),
+                            c(3, 2)),
+                            rbind(c(1, 2),
+                                  c(2, 4)))
+
+st_multilinestring(multilinestring_list)
+
+# multipolygon
+## MULTIPOLYGON
+multipolygon_list = list(
+  list(
+    rbind(c(1, 5),
+          c(2, 2),
+          c(4, 1),
+          c(4, 4),
+          c(1, 5))),
+  list(
+    rbind(c(0, 2),
+          c(1, 2),
+          c(1, 3),
+          c(0, 3),
+          c(0, 2))))
+st_multipolygon(multipolygon_list)
+
+# geometry collection
+geometrycollection_list = list(st_multipoint(multipoint_matrix),
+                               st_linestring(linestring_matrix))
+
+st_geometrycollection(geometrycollection_list)
+
+```
+
+
+TYPO: "st_multilinestring((multilinestring_list))"
+remove extra parentheses
+
+Simple feature columns (sfc):
+
+- one sfg per single feature geometry, one sfc list columns can have many sfgs and crs info
+
+```{r}
+# sfc POINT
+point1 = st_point(c(5, 2))
+point2 = st_point(c(1, 3))
+points_sfc = st_sfc(point1, point2)
+points_sfc
+```
+
+st_sfc needs a CRS
+
+sfheders package:
+Separate from sf, but speeds up construction/conversion/manipulation of sf objects.
+
+```{r}
+v = c(1, 1)
+v_sfg_sfh = sfheaders::sfg_point(obj = v)
+```
+
+Good for constructing and deconstructing sf objects.
+
+Spherical geometry operations with S2:
+
+- the world is round
+
+TYPO: "S2 is turned on" should say "off"
+
+TYPO: "(and with older versions of sf) fail" include "fail"
+in the parentheses?
+
+
+Raster = divided surface into cells of constant size (continuous) + at a resolution
+
+```{r}
+
+```
+
+
+
+
+
