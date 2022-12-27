@@ -17,7 +17,8 @@ History:
 Ah, interesting, proj-strings for coordinate reference
 systems were replaced by "well known text"
 
-"high-performance interactive rendering platforms in the mapview package, such as "leafgl" and "mapdeck"
+"high-performance interactive rendering platforms in the mapview package,
+such as "leafgl" and "mapdeck"
 
 1.6 Excercise:
 
@@ -29,7 +30,10 @@ I don't do any strong statistics or large data so I wouldn't use
 GDS. Also, I try not to use proprietary GIS systems like ArcPro
 even though that is not the only GIS system.
 
-2. Three good reasons to use code for geospatial work include 1. reproducible, the code can (hopefully) be checked by someone else to arrive at the same results, 2. better understand geoprocesses, GUIs abstract away the processes that are occurring to the data and code helps build understanding, 3. Lot of open resources to learn from and use.
+2. Three good reasons to use code for geospatial work include 1. reproducible,
+the code can (hopefully) be checked by someone else to arrive at
+the same results, 2. better understand geoprocesses, GUIs abstract away the processes that are occurring to the data and code helps build understanding,
+3. Lot of open resources to learn from and use.
 
 3. Real world problems and solutions using geocomputation
 
@@ -190,7 +194,7 @@ st_point(c(5, 2))
 # xyz point
 st_point(c(5, 2, 3))
 
-#XYM
+# XYM
 st_point(c(5, 2, 1), dim = "XYM")
 
 # XYZM
@@ -200,17 +204,21 @@ st_point(c(5, 2, 3, 1))
 Use matrices for multipoint or linestring objects
 
 ```{r}
-multipoint_matrix = rbind(c(5, 2),
-                          c(1, 3),
-                          c(3, 4),
-                          c(3, 2))
+multipoint_matrix <- rbind(
+  c(5, 2),
+  c(1, 3),
+  c(3, 4),
+  c(3, 2)
+)
 st_multipoint(multipoint_matrix)
 
-linestring_matrix = rbind(c(1, 5),
-                          c(4, 4),
-                          c(4, 1),
-                          c(2, 2),
-                          c(3, 2))
+linestring_matrix <- rbind(
+  c(1, 5),
+  c(4, 4),
+  c(4, 1),
+  c(2, 2),
+  c(3, 2)
+)
 st_linestring(linestring_matrix)
 
 ```
@@ -219,60 +227,83 @@ Use lists for multilinestrings, multi + polygons, and geometry collections
 
 ```{r}
 # polygon
-polygon_list = list(rbind(c(1, 5),
-                          c(2, 2),
-                          c(4, 1),
-                          c(4, 4),
-                          c(1, 5)))
+polygon_list <- list(rbind(
+  c(1, 5),
+  c(2, 2),
+  c(4, 1),
+  c(4, 4),
+  c(1, 5)
+))
 
 st_polygon(polygon_list)
 
 # polygon with hole
-polygon_border = rbind(c(1, 5),
-                          c(2, 2),
-                          c(4, 1),
-                          c(4, 4),
-                          c(1, 5))
-polygon_hole = rbind(c(2, 4),
-                     c(3, 4),
-                     c(3, 3),
-                     c(2, 3),
-                     c(2, 4))
-polygon_with_hole_list = list(polygon_border,
-                              polygon_hole)
+polygon_border <- rbind(
+  c(1, 5),
+  c(2, 2),
+  c(4, 1),
+  c(4, 4),
+  c(1, 5)
+)
+polygon_hole <- rbind(
+  c(2, 4),
+  c(3, 4),
+  c(3, 3),
+  c(2, 3),
+  c(2, 4)
+)
+polygon_with_hole_list <- list(
+  polygon_border,
+  polygon_hole
+)
 st_polygon(polygon_with_hole_list)
 
 # multilinestring
-multilinestring_list = list(rbind(c(1, 5),
-                            c(4, 4),
-                            c(4, 1),
-                            c(2, 2),
-                            c(3, 2)),
-                            rbind(c(1, 2),
-                                  c(2, 4)))
+multilinestring_list <- list(
+  rbind(
+    c(1, 5),
+    c(4, 4),
+    c(4, 1),
+    c(2, 2),
+    c(3, 2)
+  ),
+  rbind(
+    c(1, 2),
+    c(2, 4)
+  )
+)
 
 st_multilinestring(multilinestring_list)
 
 # multipolygon
 ## MULTIPOLYGON
-multipolygon_list = list(
+multipolygon_list <- list(
   list(
-    rbind(c(1, 5),
-          c(2, 2),
-          c(4, 1),
-          c(4, 4),
-          c(1, 5))),
+    rbind(
+      c(1, 5),
+      c(2, 2),
+      c(4, 1),
+      c(4, 4),
+      c(1, 5)
+    )
+  ),
   list(
-    rbind(c(0, 2),
-          c(1, 2),
-          c(1, 3),
-          c(0, 3),
-          c(0, 2))))
+    rbind(
+      c(0, 2),
+      c(1, 2),
+      c(1, 3),
+      c(0, 3),
+      c(0, 2)
+    )
+  )
+)
 st_multipolygon(multipolygon_list)
 
 # geometry collection
-geometrycollection_list = list(st_multipoint(multipoint_matrix),
-                               st_linestring(linestring_matrix))
+geometrycollection_list <- list(
+  st_multipoint(multipoint_matrix),
+  st_linestring(linestring_matrix)
+)
 
 st_geometrycollection(geometrycollection_list)
 
@@ -288,9 +319,9 @@ Simple feature columns (sfc):
 
 ```{r}
 # sfc POINT
-point1 = st_point(c(5, 2))
-point2 = st_point(c(1, 3))
-points_sfc = st_sfc(point1, point2)
+point1 <- st_point(c(5, 2))
+point2 <- st_point(c(1, 3))
+points_sfc <- st_sfc(point1, point2)
 points_sfc
 ```
 
@@ -318,9 +349,1342 @@ in the parentheses?
 
 Raster = divided surface into cells of constant size (continuous) + at a resolution
 
+  -   raster header (CRS, extent, origin) and matrix
+  -   Origin= usually coordinate in lower-left corner of matrix
+  -   origin + map algebra = more efficient than vector
+  -   but raster cell can only hold one value
+  -   cell ID and cell value
+  -   use for both continuous or discrete values but sometimes vector is better for discrete
+
+Original package {raster} now better {terra} and {stars}
+
+**terra**
+  -   most common raster data model = rectangular
+  -   one or multi-layered rasters
+  -   terra has own class for vector
+  -   lot of built-in functions
+  -   rast() = terra <- stars
+  
+
+**stars**
+  -   less popular models = regular, rotated, sheared, rectilinear, curvilinear
+  -   store raster data cubes
+  -   closely related to vector objects
+  -   uses st_ functions and methods for existing R fucntions
+  -   st_as_stars() = stars <- terra
+
+
+
+In terra, can change between {terra} and {raster} objects. terra also allows to divide raster into smaller chunks if data is too large to fit into memory. 
+
+
 ```{r}
+raster_filepath = system.file("raster/srtm.tif", package = "spDataLarge")
+my_rast = rast(raster_filepath)
+class(my_rast)
+
+ncell(my_rast)
+res(my_rast)
+ext(my_rast)
 
 ```
+
+Basic map making
+
+```{r}
+plot(my_rast)
+
+```
+
+For plotting, there is also plotRGB(), {tmap}, and rasterVis.
+
+Raster Classes
+  -   SpatRaster class = terra raster object
+  -   easiest import is from read-in from disk
+  -   default CRS = WGS84, change via crs arg
+
+```{r}
+new_raster = rast(nrows = 6, ncols = 6, resolution = 0.5, 
+                  xmin = -1.5, xmax = 1.5, ymin = -1.5, ymax = 1.5,
+                  vals = 1:36)
+```
+
+Handling mutliple layers
+
+```{r}
+multi_raster_file = system.file("raster/landsat.tif", package = "spDataLarge")
+multi_rast = rast(multi_raster_file)
+multi_rast
+
+# sometimes you just need some of the layers
+multi_rast3 = subset(multi_rast, 3)
+multi_rast4 = subset(multi_rast, "landsat_4")
+```
+
+Geographic and projected Coordinate Reference Systems
+
+Vector and raster data need CRSs
+  -   how spatial elemetns relate to surface
+  
+GCS = ID any location on Earth surface using long and lat
+  -   longitude = East-West direction angular distance from Prime Meridian
+  -   Latitude = angular distance North or South from equatorial plane
+  -   Surface in GCS represented by spherical/ellipsoid models
+
+CRS datum
+  -   what ellipsoid to use + relationship between cartesian coordinates and location on earth surface (math)
+
+1. geocentric = WGS84, center is location in Earth's center of gravity, not specific location
+
+2. local datum = NAD83, ellipsoidal model shifted to align with surface at particular location
+  -   allow local variations (e.g., large mountain ranges) to be accounted for
+  
+Projected coordinate reference systems
+
+  -   based on geographic CRS + need map projections to convert 3 dimensions into Easting (x) and Northing (y) values.
+  -   origin, x and y axes, linear unit measure
+  -   distortions to Earth surface
+    -   area = equal-area
+    -   direction = azimuthal
+    -   distance = equidistant
+    -   shape = conformal
+  -   can only preserve one or two pf these properties, usually in the name
+  -   Three main groups of projections:
+    -   conic
+      -   cone projection with 1 or 2 lines tangency, minimal distortion along tangency line
+      -   **best for mid-latitude areas**
+    -   cylindrical
+      -   surface on a cylinder with 1 or 2 lines of tangency
+      -   **entire world**
+    -   planar (azimuthal)
+      -   touches globe at a point or line of tangency
+      -   **best for polar regions**
+  -   geographic = lon/lat, projected typically meters
+  -   sf crs = st_crs(), terra crs = crs()
+-   Units are important, use the units package to avoid mistakes/ambiguity
+  -   units::set_units(st_area(), km^2)
+-   sf can change units, but terra does not allow you to change units, you need to know units returned from projection casting
+
+Exercises
+
+```{r}
+#1
+terra::summary(spData::world$geom)
+
+# Geometry type is MULTIPOLYGON
+# 177 countries I guess?
+# the CRS is geographic WGS84
+
+
+#2
+plot(world["continent"], reset = FALSE)
+cex = sqrt(world$pop) / 10000
+world_cents = st_centroid(world, of_largest = TRUE)
+plot(st_geometry(world_cents), add = TRUE, cex = cex)
+
+# differences
+# 1. My version of the map appears to be more flat and not as round
+# 2. my version also looks like it has more area per country than the book's version.
+
+# similarities
+# 1. same colors
+# 2. Centroids appear to be same relative size
+
+# cex is a number vector describing the scale for characters and symbols
+
+# square root transformation helps normalize the skew of a distribution and the division of 10000 is to create a per capita number for population
+
+# trying a log transformation
+plot(world["continent"], reset = FALSE)
+cex = log10(world$pop) / 10000
+world_cents = st_centroid(world, of_largest = TRUE)
+plot(st_geometry(world_cents), add = TRUE, cex = cex)
+# ah, log was too aggresive, can't see differences in pop
+
+# trying a smaller denominator, should get larger circles then since higher cex value, so larger proportional scale
+plot(world["continent"], reset = FALSE)
+cex = sqrt(world$pop) / 1000
+world_cents = st_centroid(world, of_largest = TRUE)
+plot(st_geometry(world_cents), add = TRUE, cex = cex)
+
+# yup, now the scale is ridiculous
+
+# 3. Create Nigeria maps
+
+Nigeria = world[world$name_long == "Nigeria", ]
+plot(st_geometry(Nigeria), expandBB = c(0.5, 0.5, 0.5, 0.5), col = "red", lwd = 5)
+world_africa = world[world$continent == "Africa", ]
+lab_position <- st_coordinates(st_centroid(Nigeria))
+text(x = lab_position[1],
+     y = lab_position[2],
+     labels = "Centroid",
+     cex = 0.35)
+plot(st_geometry(world_africa), add = TRUE)
+
+# 4. Create my_raster
+
+my_raster <- rast(nrows = 10, ncols = 10, vals = 1:10)
+
+plot(my_raster)
+
+# 5.
+nlcd <- system.file("raster/nlcd.tif", package = "spDataLarge")
+my_nlcd <- rast(nlcd)
+class(my_nlcd)
+
+my_nlcd
+
+# rows, columns, layers
+dim(my_nlcd)
+
+# number cells
+ncell(my_nlcd)
+
+# spatial resolution
+res(my_nlcd)
+
+# spatial extent
+ext(my_nlcd)
+
+# crs
+writeLines(crs(my_nlcd))
+
+# can see the datum, ellipsoid, units, origin, and usage/other
+# info
+
+# is this in memory?
+inMemory(my_nlcd)
+
+```
+
+
+
+# 3 Attribute data operations
+
+```{r}
+library(sf)      # vector data package introduced in Chapter 2
+library(terra)   # raster data package introduced in Chapter 2
+library(dplyr)   # tidyverse package for data frame manipulation
+library(spData)  # spatial data package introduced in Chapter 2
+```
+
+Attribute data
+  -   non-spatial info associated with geographic data
+  
+Vector data = subsetting and aggregation
+
+Raster data = create raster layer attributes and raster subsetting
+
+
+1. Vector attribute manipulation
+
+Can name geometry columns whateever you want via:
+  -   st_sf(data.frame(g = world$geom))
+  
+```{r}
+class(world)
+
+dim(world)
+```
+
+  -   vector attribute subsetting
+
+```{r}
+world[1:6, ]    # subset rows by position
+world[, 1:3]    # subset columns by position
+world[1:6, 1:3] # subset rows and columns by position
+world[, c("name_long", "pop")] # columns by name
+world[, c(T, T, F, F, F, F, F, T, T, F, F)] # by logical indices
+world[, 888] # an index representing a non-existent column
+
+small_countries = subset(world, area_km2 < 10000)
+```
+
+Tidyverse functions:
+  -   select(), filter(), slice()
+  -   pipes = output previous function become first argument in next function
+
+Vector attribute aggregation
+  -   summarize data with one or more group variables
+
+```{r}
+world_agg1 = aggregate(pop ~ continent, FUN = sum, data = world,
+                       na.rm = TRUE)
+class(world_agg1)
+#> [1] "data.frame"
+```
+
+sf function
+
+```{r}
+world_agg2 = aggregate(world["pop"], list(world$continent), FUN = sum, 
+                       na.rm = TRUE)
+class(world_agg2)
+#> [1] "sf"         "data.frame"
+nrow(world_agg2)
+#> [1] 8
+```
+
+tidyverse aggregation
+
+```{r}
+world_agg4  = world |> 
+  group_by(continent) |> 
+  summarize(pop = sum(pop, na.rm = TRUE), `area_sqkm` = sum(area_km2), n = n())
+```
+
+Good example with lots of dplyr verbs:
+
+```{r}
+world_agg5 = world |> 
+  st_drop_geometry() |>                      # drop the geometry for speed
+  dplyr::select(pop, continent, area_km2) |> # subset the columns of interest  
+  group_by(continent) |>                     # group by continent and summarize:
+  summarize(Pop = sum(pop, na.rm = TRUE), Area = sum(area_km2), N = n()) |>
+  mutate(Density = round(Pop / Area)) |>     # calculate population density
+  slice_max(Pop, n = 3) |>                   # keep only the top 3
+  arrange(desc(N))                           # arrange in order of n. countries
+```
+
+
+Vector attribute joining
+
+```{r}
+world_coffee = left_join(world, coffee_data)
+#> Joining, by = "name_long"
+class(world_coffee)
+#> [1] "sf"         "tbl_df"     "tbl"        "data.frame"
+
+plot(world_coffee["coffee_production_2017"])
+
+```
+
+OOoo, useful setup for figuring out what did not match between two dfs
+
+```{r}
+setdiff(coffee_data$name_long, world$name_long)
+#> [1] "Congo, Dem. Rep. of" "Others"
+```
+
+Creating attributes and removing spatial information
+
+unite() and other tidyr functions are useful for reshaping datasets
+
+```{r}
+world_unite = world |>
+  tidyr::unite("con_reg", continent:region_un, sep = ":", remove = TRUE)
+```
+
+
+setNames() changes all column names at once, rename can focus on just one
+
+
+Manipulating raster objects
+
+E.g., of a raster from scratch
+
+```{r}
+elev = rast(nrows = 6, ncols = 6, resolution = 0.5, 
+            xmin = -1.5, xmax = 1.5, ymin = -1.5, ymax = 1.5,
+            vals = 1:36)
+```
+
+
+Rasters can also contain categorical data like logical and factor classes.
+
+```{r}
+grain_order = c("clay", "silt", "sand")
+grain_char = sample(grain_order, 36, replace = TRUE)
+grain_fact = factor(grain_char, levels = grain_order)
+grain = rast(nrows = 6, ncols = 6, resolution = 0.5, 
+             xmin = -1.5, xmax = 1.5, ymin = -1.5, ymax = 1.5,
+             vals = grain_fact)
+
+
+# view raster categories
+cats(grain)
+```
+
+Working with existing factor levels
+
+```{r}
+levels(grain) = data.frame(value = c(0, 1, 2), wetness = c("wet", "moist", "dry"))
+levels(grain)
+#> [[1]]
+#>   value wetness
+#> 1     0     wet
+#> 2     1   moist
+#> 3     2     dry
+```
+
+
+Raster subsetting (non-spatial)
+
+```{r}
+# row 1, column 1
+elev[1, 1]
+# cell ID 1
+elev[1]
+
+
+# override value of upper left cell
+elev[1, 1] = 0
+
+# retrieve everything
+elev[]
+
+```
+
+
+Summarizing raster objects 
+Use summary() and global() to get descriptive statistics
+
+
+```{r}
+
+summary(elev)
+
+global(elev, sd)
+
+
+# each layer separate
+summary(c(elev, grain))
+
+# plotting works with several functions
+
+hist(elev)
+pairs(elev)
+```
+
+
+Exercises
+
+```{r}
+library(sf)
+library(dplyr)
+library(terra)
+library(spData)
+data(us_states)
+data(us_states_df)
+```
+
+
+```{r}
+# 1
+us_states_name <- us_states |> 
+  select(NAME)
+
+class(us_states_name)
+
+# it is a spatial dataframe because it still contains a simple feature column (sfc) with geometry
+
+# 2
+us_states |> 
+  select(starts_with("total"))
+
+us_states |> 
+  select(contains("pop"))
+
+# giving up on this route
+# us_states |> 
+#   select(num_range(range = ))
+
+# 3
+us_states |>
+  filter(REGION == "Midwest")
+
+us_states |>
+  filter(REGION == "West" &
+           AREA < units::set_units(250000, km^2) &
+           total_pop_15 > 5000000)
+
+us_states |>
+  filter(REGION == "South" |
+           AREA > units::set_units(150000, km^2) |
+           total_pop_15 > 7000000)
+
+# 4
+us_states |> 
+  st_drop_geometry() |> 
+  summarize(total_2015_pop = sum(total_pop_15),
+            min_2015 = min(total_pop_15),
+            max_2015 = max(total_pop_15))
+
+# 5
+us_states |> 
+  st_drop_geometry() |> 
+  group_by(REGION) |> 
+  count()
+
+# 6
+us_states |> 
+  st_drop_geometry() |> 
+  group_by(REGION) |> 
+  summarize(total_2015_pop = sum(total_pop_15),
+            min_2015 = min(total_pop_15),
+            max_2015 = max(total_pop_15))
+
+
+# 7
+
+
+us_states_stats <- left_join(x = us_states,
+                             y = us_states_df,
+                             by = c("NAME" = "state"))
+
+# I used left_join() since I only needed to attach relevant rows and columns from one dataset to the us_states dataset
+
+# key variable was state in this case
+
+# class is still a spatial dataframe, I just added extra columns
+
+# 8
+extra_rows <- anti_join(x = us_states_df,
+                        y = us_states,
+                        by = c("state" = "NAME"))
+
+# extra states were Alaska and Hawaii
+
+# 9
+us_states |> 
+  # calculate population density
+  mutate(pop_density_2015 = round(total_pop_15/AREA))
+
+# 10
+us_states |> 
+  # calculate population density
+  mutate(pop_density_2015 = round(total_pop_15/AREA),
+         pop_density_2010 = round(total_pop_10/AREA),
+         change = units::drop_units(((pop_density_2015 - pop_density_2010)/pop_density_2010)*100))
+
+# 11
+us_states |> 
+  colnames() |> 
+  tolower()
+
+# 12
+us_states_sel <- left_join(x = us_states,
+                           y = us_states_df,
+                           by = c("NAME" = "state")) |> 
+  select(Income = median_income_15)
+
+# 13
+left_join(x = us_states,
+          y = us_states_df,
+          by = c("NAME" = "state")) |> 
+  mutate(percent_pov_2010 = (poverty_level_10/total_pop_10)*100,
+         percent_pov_2015 = (poverty_level_15/total_pop_15)*100,
+         change_in_percent = percent_pov_2015 - percent_pov_2010)
+
+# 14
+left_join(x = us_states,
+          y = us_states_df,
+          by = c("NAME" = "state")) |>
+  st_drop_geometry() |> 
+  group_by(REGION) |> 
+  summarize(mean_2015_pov = mean(poverty_level_15,
+                                  na.rm = TRUE),
+            min_2015_pov = min(poverty_level_15),
+            max_2015_pov = max(poverty_level_15))
+
+
+# bonus: region largest increase in people in poverty
+left_join(x = us_states,
+          y = us_states_df,
+          by = c("NAME" = "state")) |> 
+  st_drop_geometry() |> 
+  group_by(REGION) |> 
+  summarize(sum_pov_2010 = sum(poverty_level_10,
+                               na.rm = TRUE),
+            sum_pov_2015 = sum(poverty_level_15,
+                               na.rm = TRUE),
+         change_in_sum = sum_pov_2015 - sum_pov_2010)
+
+
+#TYPO: REGION == "Norteast"
+
+# 15
+practice_rast <- rast(nrows = 9,
+                      ncols = 9,
+                      crs = "EPSG:4326",
+                      resolution = 0.5,
+vals = sample(1:81,
+              81,
+              replace = TRUE))
+
+practice_rast[1,1]
+practice_rast[1,9]
+practice_rast[9,1]
+practice_rast[9,9]
+
+
+# 16
+class(grain)
+
+# SpatRaster?
+
+# 17
+
+my_data <- system.file("raster/dem.tif", package = "spDataLarge")
+
+my_rast_data <- rast(my_data)
+
+hist(my_rast_data)
+
+boxplot(my_rast_data)
+
+```
+
+
+# 4 Spatial data operations
+
+```{r}
+library(sf)
+library(terra)
+library(dplyr)
+library(spData)
+library(geodata)
+```
+
+```{r}
+elev = rast(system.file("raster/elev.tif", package = "spData"))
+grain = rast(system.file("raster/grain.tif", package = "spData"))
+```
+
+How spatial objects can be modified based on their location and shape.
+
+Also, all spatial objects are related through space.
+
+Spatial operations on vector data
+
+Spatial subsetting:
+
+Subset features of target X using contents of a source Y.
+
+  -   topological relations
+  -   alternative spatial operators (op = st_disjoint)
+
+```{r}
+canterbury = nz |> filter(Name == "Canterbury")
+canterbury_height = nz_height[canterbury, ]
+
+nz_height[canterbury, , op = st_disjoint]
+```
+
+Objects returned by topological operators:
+
+  -   class = sparse geometry binary predicate (sgbp)
+
+  -   sparse = FALSE will return a dense, not sparse matrix
+    -   
+
+```{r}
+sel_sgbp = st_intersects(x = nz_height, y = canterbury)
+class(sel_sgbp)
+#> [1] "sgbp" "list"
+sel_sgbp
+
+# using lengths on an sgbp object is better than creating a dense matrix via st_filter(x, y, sparse = FALSE)
+sel_logical = lengths(sel_sgbp) > 0
+
+
+
+# both objects need to be spatial objects to successfully subset
+canterbury_height2 = nz_height[sel_logical, ]
+
+canterbury_height3 = nz_height |>
+  st_filter(y = canterbury, .predicate = st_intersects)
+```
+
+
+Topology relations = logical statements about two objects in two or more dimensions.
+
+  -   each geometry pair has a DE-9IM string describing the spatial relationship
+  
+  -   binary predicates = functions testing for topological relations
+
+```{r}
+polygon_matrix = cbind(
+  x = c(0, 0, 1, 1,   0),
+  y = c(0, 1, 1, 0.5, 0)
+)
+polygon_sfc = st_sfc(st_polygon(list(polygon_matrix)))
+```
+
+```{r}
+line_sfc = st_sfc(st_linestring(cbind(
+  x = c(0.4, 1),
+  y = c(0.2, 0.5)
+)))
+# create points
+point_df = data.frame(
+  x = c(0.2, 0.7, 0.4),
+  y = c(0.1, 0.2, 0.8)
+)
+point_sf = st_as_sf(point_df, coords = c("x", "y"))
+```
+
+Are points in polygons?
+
+```{r}
+
+# sparse matrix
+st_intersects(point_sf, polygon_sfc)
+
+# dense matrix
+st_intersects(point_sf, polygon_sfc, sparse = FALSE)
+
+```
+
+intersects = "catch-all" for all topological operations.
+
+These are more specific spatial operations:
+
+```{r}
+st_within(point_sf, polygon_sfc)
+st_touches(point_sf, polygon_sfc)
+```
+
+st_disjoint = no spatial relation
+
+```{r}
+st_disjoint(point_sf, polygon_sfc, sparse = FALSE)[, 1]
+
+```
+
+Distance functions:
+
+  -   calculate distance from nearest vertex
+
+```{r}
+st_distance(point_sf, polygon_sfc)
+
+st_is_within_distance(point_sf, polygon_sfc, dist = 0.2, sparse = FALSE)[,1]
+
+```
+
+Spatial indices speed up spatial query performance. They use the Sort-Tile-Recursive (STR) algorithim.
+
+DE-9IM strings
+
+Dimensional Extended 9-Intersection Model (DE-9IM)
+
+After the matrix is made, then flatten the matrix into a string of numbers representing the relationships.
+
+```{r}
+xy2sfc = function(x, y) st_sfc(st_polygon(list(cbind(x, y))))
+x = xy2sfc(x = c(0, 0, 1, 1,   0), y = c(0, 1, 1, 0.5, 0))
+y = xy2sfc(x = c(0.7, 0.7, 0.9, 0.7), y = c(0.8, 0.5, 0.5, 0.8))
+st_relate(x, y)
+
+# custom predicate functions from learning about DE-9IM strings
+
+st_queen = function(x, y) st_relate(x, y, pattern = "F***T****")
+st_rook = function(x, y) st_relate(x, y, pattern = "F***1****")
+
+
+grid = st_make_grid(x, n = 3)
+grid_sf = st_sf(grid)
+grid_sf$queens = lengths(st_queen(grid, grid[5])) > 0
+plot(grid, col = grid_sf$queens)
+grid_sf$rooks = lengths(st_rook(grid, grid[5])) > 0
+plot(grid, col = grid_sf$rooks)
+
+```
+
+
+Spatial joining = spatial relations that add new columns to target object x from source object y.
+
+E.g., 10 points scattered around the bounding box of the world
+
+```{r}
+set.seed(2018) # set seed for reproducibility
+(bb = st_bbox(world)) # the world's bounds
+#>   xmin   ymin   xmax   ymax 
+#> -180.0  -89.9  180.0   83.6
+random_df = data.frame(
+  x = runif(n = 10, min = bb[1], max = bb[3]),
+  y = runif(n = 10, min = bb[2], max = bb[4])
+)
+random_points = random_df |> 
+  st_as_sf(coords = c("x", "y")) |> # set coordinates
+  st_set_crs("EPSG:4326") # set geographic CRS
+```
+
+
+```{r}
+world_random = world[random_points, ]
+nrow(world_random)
+random_joined = st_join(random_points, world["name_long"])
+nrow(random_joined)
+```
+
+Non-overlapping joins
+
+```{r}
+plot(st_geometry(cycle_hire), col = "blue")
+plot(st_geometry(cycle_hire_osm), add = TRUE, pch = 3, col = "red")
+```
+
+Ooooo, check if any points are the same via 
+This is a good test to use for duplicates.
+
+```{r}
+any(st_touches(cycle_hire, cycle_hire_osm, sparse = FALSE))
+```
+
+Need to relate even if not touching, use within distance
+
+```{r}
+sel = st_is_within_distance(cycle_hire, cycle_hire_osm, dist = 20)
+summary(lengths(sel) > 0)
+
+```
+
+Meters are the default unit for distance:
+
+```{r}
+z = st_join(cycle_hire, cycle_hire_osm, st_is_within_distance, dist = 20)
+nrow(cycle_hire)
+
+
+# this value is greater because there are some stations that have multiple matches with the distance
+nrow(z)
+
+```
+
+Aggregate values for overlapping points
+
+```{r}
+z = z |> 
+  group_by(id) |> 
+  summarize(capacity = mean(capacity))
+nrow(z) == nrow(cycle_hire)
+
+plot(cycle_hire_osm["capacity"])
+plot(z["capacity"])
+
+```
+
+Attribute data has changed, but the geometry has not changed.
+
+EDIT: It's a little confusing what this dataset is talking about, a bit more description of this dataset could clarify the situation.
+
+
+Spatial Aggregation
+
+  -   condenses data
+  -   mean, sum -> return value per grouping variable
+
+
+You want to find out the average height of high points in each region.
+
+```{r}
+nz_agg = aggregate(x = nz_height, by = nz, FUN = mean)
+
+# tidy version
+
+nz_agg2 = st_join(x = nz, y = nz_height) |>
+  group_by(Name) |>
+  summarize(elevation = mean(elevation, na.rm = TRUE))
+
+```
+
+The tidy version is more flexible since unmatched region names are preserved, vs. aggregate results in NA.
+
+
+Verify same geometry
+
+```{r}
+
+identical(st_geometry(nz), st_geometry(nz_agg))
+
+```
+
+Joining incongruent layers
+
+Target object (x) is congruent with aggregating object (y) if two objects have shared borders. E.g., administrative boundary data.
+
+Incongruent aggregating objects do **not** share common borders with the target. Can deal with this via areal interpolation (transfer areal units) via simple area weighted approaches to sophisticated 'pycnophylactic' methods.
+
+
+Oooo, for area weighting can use st_interpolate_aw()
+
+
+```{r}
+iv = incongruent["value"] # keep only the values to be transferred
+agg_aw = st_interpolate_aw(iv, aggregating_zones, extensive = TRUE)
+
+agg_aw$value
+
+```
+
+Spatially extensive variable = increases with area, e.g., total income, assuming income is evenly distriuted across the smaller zones.
+
+Spatially intensive variables = do not increase as the area increases, e.g., avg income or percentages. Can still use st_interpolate_aw() but should switch the extensive parameter to FALSE.
+
+Distance relations
+
+  -   topological relations are binary
+  -   distance relations are continuous
+  
+E.g., distance between the highest point in New Zealand and the geographic centroid of the Canterbury region
+
+```{r}
+nz_highest = nz_height |> slice_max(n = 1, order_by = elevation)
+canterbury_centroid = st_centroid(canterbury)
+st_distance(nz_highest, canterbury_centroid)
+
+```
+
+The result returned units and also a matrix, meaning it can return combinations of x and y features.
+
+```{r}
+co = filter(nz, grepl("Canter|Otag", Name))
+st_distance(nz_height[1:3, ], co)
+
+```
+
+**Important** Distance between points and polygons refer to the distance to *any* part of the polygon.
+
+```{r}
+plot(st_geometry(co)[2])
+plot(st_geometry(nz_height)[2:3], add = TRUE)
+```
+
+
+Spatial operations on raster data
+
+Spatial subsetting via coordinates with cell ID, can use two functions:
+
+```{r}
+id = cellFromXY(elev, xy = matrix(c(0.1, 0.1), ncol = 2))
+elev[id]
+# the same as
+terra::extract(elev, matrix(c(0.1, 0.1), ncol = 2))
+```
+
+Can subset raster with another raster
+
+```{r}
+clip = rast(xmin = 0.9, xmax = 1.8, ymin = -0.45, ymax = 0.45,
+            resolution = 0.3, vals = rep(1, 9))
+elev[clip]
+
+```
+
+A lot of times need the spatial information as well
+
+```{r}
+elev[1:2, drop = FALSE]    # spatial subsetting with cell IDs
+```
+
+Also, spatial subsetting when raster with logical/NA values masks another raster
+
+```{r}
+# create raster mask
+rmask = elev
+values(rmask) = sample(c(NA, TRUE), 36, replace = TRUE)
+
+# only want  values from mask cells that are TRUE
+
+# spatial subsetting
+elev[rmask, drop = FALSE]           # with [ operator
+mask(elev, rmask)                   # with mask()
+
+```
+
+Replace values if needed
+
+```{r}
+elev[elev < 20] = NA
+```
+
+
+Map algebra
+
+  -   techniques for analysis of raster and, to a lesser extent, vector data
+  -   operations that modify or summarize raster cell values with reference to surrounding cells, zones, stat functions that apply to every cell
+  
+  -   "raster is faster, but vector is corrector"
+  -   location of cells in raster can be calculated by using its matrix position, resolution, and origin of the dataset (stored in the header).
+  
+How map algebra works in terra:
+
+1. headers of raster queried, check compatibility
+
+2. map algebra maintains one-to-one locational correspondence, cells cannot move (not matrix algebra, where values can change position)
+
+Four subclasses:
+
+  1.    Local or per-cell operation
+  
+  -   add or subtract values from a raster, square, multiply
+  -   filter cells by specific values
+
+
+```{r}
+elev + elev
+elev^2
+log(elev)
+elev > 5
+```
+
+  -   classify into groups of values
+  
+```{r}
+rcl = matrix(c(0, 12, 1, 12, 24, 2, 24, 36, 3), ncol = 3, byrow = TRUE)
+rcl
+
+recl = classify(elev, rcl = rcl)
+```
+
+
+  -   app(), tapp(), lapp() useful with large raster datasets
+  -   e.g., Normalized difference vegetation index (NDVI) is well-known pixel by pixel
+    -   raster values between -1 and 1
+    -   positive values = living plants (mostly > 0.2) via landsat or sentinel
+    -   plants absorb visible light so if little is reflected back then there are probably a lot of vegetation there
+<https://earthobservatory.nasa.gov/features/MeasuringVegetation/measuring_vegetation_2.php>
+
+```{r}
+multi_raster_file = system.file("raster/landsat.tif", package = "spDataLarge")
+multi_rast = rast(multi_raster_file)
+```
+
+```{r}
+ndvi_fun = function(nir, red){
+  (nir - red) / (nir + red)
+}
+
+# need to order the layers in the correct order for the function to correctly work.
+
+# first NIR, then Red
+
+ndvi_rast = lapp(multi_rast[[c(4, 3)]], fun = ndvi_fun)
+```
+
+
+Use space or airbourne predictors (e.g., elevation, pH) from predictor rasters to model response raster as a function of predictors via lm(), glm(), and gam().
+
+
+
+
+  2.    Focal or neighborhood operations = output cell vlaue result of a 3x3 input cell block
+  
+  -   consider a central (focal) cell and its neighboors
+  -   neighborhood (aka kernel, filter, or moving window) is usually 3 x 3, but can be any shape
+  -   aggregating function for cells in neighborhood -> output as new value for central cell
+  -   also called spatial filtering and convolution
+  -   use focal(), define shape via a matrix, values correspond to weights, fun = summary function (e.g., sum(), mean(), min())
+  
+```{r}
+r_focal = focal(elev, w = matrix(1, nrow = 3, ncol = 3), fun = min)
+```
+  -   can change the weight of matrix from 1 for each cell
+
+  -   dominant role in image processing, low-pass or smoothing filters use mean to remove extremes
+  -   high-pass fitlers accentuates features
+  -   terrain processing = calculate topographic characteristics like slope, aspect, and flow directions
+    -   terrain() can calculate some of these, but also curvatures, contributing areas, and wetness indices can be Id'd using Open source desktop GIS software.
+  
+
+  3.    Zonal operations similar to focal, but pixel grid for new values can have irregular sizes and shapes
+  
+  
+  -   aggregate multiple raster cells
+  -   yet, second raster, usually categorical values, defines zonal filters (don't have to be neighbors)
+  -   focal returns raster object, zonal returns summary table grouped by zone
+    -   can get raster returned if you want
+  
+```{r}
+z = zonal(elev, grain, fun = "mean")
+z
+```
+
+  4.    Global or per-raster operations = output cell derives value potentially from one or several entire rasters
+
+
+  -   entire raster dataset represents single zone, usually operations are descriptive stats like min or mx
+  -   also compute distance and weight rasters
+    -   e.g., distance to coast, weight distnace by elevation, and also visibility and viewshed
+
+Map algebra coutnerparts in vector processing
+
+  -   reclassifying raster data via local or zonal functions equivilant to dissolving vector data
+  -   overlay two rasters (local) to mask is similar to vector clipping
+  -   intersecting two layers is similar, but be careful of wording because the same words have different meanings between vectors or rasters
+  -   aggregate vector data = dissolve polygons, similar to zonal statistics?
+
+Merging rasters
+
+```{r}
+aut = geodata::elevation_30s(country = "AUT", path = tempdir())
+ch = geodata::elevation_30s(country = "CHE", path = tempdir())
+# combines two images, if overlap uses value of first raster
+
+aut_ch = merge(aut, ch)
+
+# mosaic() command let syou define a function for overlapping area
+
+# see Wegmann, Leutner, and Dech (2016) for a better introduction to remote sensing in R
+
+```
+
+Exercises
+
+```{r}
+library(sf)
+library(dplyr)
+library(spData)
+library(terra)
+```
+
+```{r}
+# 1
+
+highest_nz_points_count <- st_join(x = nz_height,
+                             y = nz) |> 
+  st_drop_geometry() |> 
+  group_by(Name) |> 
+  count(sort = TRUE) |> 
+  ungroup() |> 
+  mutate(percent = (n/sum(n))*100)
+
+
+
+# nz regions
+
+nz_regions <- nz["Name"] |> 
+  mutate(region_color = case_when(
+    Name == "Canterbury" ~ "yellow",
+    Name != "Canterbury" ~ "grey"
+  ))
+
+# nz points
+
+highest_nz_points <- st_join(x = nz_height,
+                             y = nz) |> 
+  select(t50_fid,
+         Name,
+         geometry) |> 
+  mutate(new_color = case_when(
+    Name == "Canterbury" ~ "red",
+    Name != "Canterbury" ~ "blue"
+  ),
+  new_shape = case_when(
+    Name == "Canterbury" ~ as.numeric(7),
+    Name != "Canterbury" ~ as.numeric(1)
+  ))
+
+plot(nz_regions["Name"], reset = FALSE,
+     col = nz_regions$region_color)
+plot(highest_nz_points["t50_fid"], add = TRUE,
+     col = highest_nz_points$new_color,
+     pch = highest_nz_points$new_shape)
+
+# eh, it's not pretty, but it accomplished the goal
+
+
+# 2
+highest_nz_points_count
+
+# the West Coast region has the second highest high points in nz at 22 points.
+
+# 3
+highest_nz_points_count
+
+# Of all 16 regions, only 7 contain the top 100 highest points
+
+# Canterbury, West Coast, Waikato, Manawatu-Wanganui, Otago, Marlborough, Southland
+
+# 4
+colorado <-  us_states[us_states$NAME == "Colorado",]
+
+plot(us_states["GEOID"],
+     reset = FALSE)
+plot(colorado["GEOID"],
+     add = TRUE,
+     col = "black")
+
+# 4a. Intersect
+
+all_states_intersect_colorado <- st_filter(x = us_states,
+                                            y = colorado)
+  
+all_states_intersect_colorado = us_states[colorado,]
+
+
+# 4b. touches
+
+all_states_intersect_colorado <- st_filter(x = us_states,
+                                            y = colorado,
+                                           .predicate = st_touches)
+  
+all_states_intersect_colorado = us_states[colorado,, op = st_touches]
+
+
+# 4 bonus
+us_centroids <- st_centroid(us_states)
+
+centroids_to_line <- us_centroids |> 
+  filter(NAME %in% c("District of Columbia",
+                     "California")) |> 
+  st_union() |> 
+  st_cast(., to = "LINESTRING")
+
+st_filter(x = us_states,
+          y = centroids_to_line)
+
+# Found 14 states that cross this line
+
+# 5a
+dem = rast(system.file("raster/dem.tif", package = "spDataLarge"))
+
+m <- c(0, 300, 1,
+       300, 500, 2,
+       500, 1100, 3)
+
+rclmat <- matrix(m,
+                 ncol = 3,
+                 byrow = TRUE)
+
+rcldem = classify(dem, rclmat, include.lowest = TRUE)
+
+names(rcldem) <- "rcldem"
+
+# 5b
+ndvi = rast(system.file("raster/ndvi.tif", package = "spDataLarge"))
+
+# ndvi_fun = function(nir, red){
+#   (nir - red) / (nir + red)
+# }
+
+# combine the NDVI and elevation data
+
+combine_layers <- c(rcldem, ndvi, dem)
+
+zonal_calc <- zonal(x = c(ndvi, dem), z = rcldem, fun = "mean")
+# Yes! figured it out
+
+
+# 6
+six_rast <- rast(system.file("ex/logo.tif", package = "terra"))
+
+fx=matrix(c(-1,-2,-1,0,0,0,1,2,1), nrow=3)
+
+f_x <- focal(six_rast, w=fx, fun="mean")
+
+plot(f_x)
+
+fy=matrix(c(1,0,-1,2,0,-2,1,0,-1), nrow=3)
+
+f_y <- focal(six_rast, w=fy, fun="mean")
+
+plot(f_y)
+
+# I'm not sure what the output is supposed to look like but I think I did it
+
+# 7
+ndwi_import <- (system.file("raster/landsat.tif", package = "spDataLarge"))
+
+ndwi_rast <- rast(ndwi_import)
+
+ndwi_formula <- function(green, nir){
+  (green - nir)/(green + nir)
+}
+
+ndvi_fun = function(nir, red){
+  (nir - red) / (nir + red)
+}
+# NDWI
+ndwi = lapp(multi_rast[[c(2, 4)]], fun = ndwi_formula)
+
+ndvi = lapp(multi_rast[[c(4, 3)]], fun = ndvi_fun)
+
+comb_index <- c(ndwi, ndvi)
+names(comb_index) <- c("ndwi",
+                       "ndvi")
+
+# Correlation between NDVI and NDWI
+corr <- layerCor(comb_index,
+                 fun = "pearson")
+# makes sense that it's strongly negatively correlated since no water with vegetation and vice versa.
+
+# 8
+spain <- geodata::elevation_30s(country = "Spain", path = ".")
+
+plot(spain)
+
+spain_na <- mask(is.na(spain), spain,
+                 maskvalue=1,
+                 updatevalue = NA_integer_)
+
+plot(spain_na)
+
+unique(matrix(spain_na))
+
+spain_na_flip <- subst(spain_na,
+                       from = c(TRUE, FALSE), to = c(FALSE, TRUE))
+
+plot(spain_na_flip)
+
+unique(matrix(spain_na_flip))
+
+
+# ah, yes, if the mask value is 1, in this case false na, then the update value should be the opposite of the logic test, 0 (which stands for NA)
+
+# increase cell size
+
+spain_res <- aggregate(spain_na_flip, fact = 8)
+
+spain_final <- spain_res
+
+spain_final[spain_final$ESP_elv_msk > 0] <- NA
+
+spain_dist <- terra::distance(spain_final,
+                              unit = "km")
+
+units(spain_dist) <- "km"
+
+
+plot(spain_dist)
+
+# 9
+adjust_elevation_cells <- aggregate(spain, fact = 8)
+
+units(adjust_elevation_cells) <- "m"
+
+dist_weighted <- spain_dist +(adjust_elevation_cells/10)
+
+plot(dist_weighted)
+
+
+# visualize the difference between maps
+
+spain_comparison <- (dist_weighted - spain_dist)
+
+plot(spain_comparison)
+
+
+# map shows how many more km are added in spots when considering altitudinal meters into distance besides Euclidean distance
+
+```
+
+
+# 5 Geometry Operations
+
+Manipulate geographic elements of geographic objects.
+
+```{r}
+library(sf)
+library(terra)
+library(dplyr)
+library(spData)
+library(spDataLarge)
+```
+
+
 
 
 
